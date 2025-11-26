@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/config/AppRoutes.dart';
 import '../../data/datasources/auth_remote_datasource.dart';
+import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/usecases/login_usecase.dart';
 
@@ -20,7 +21,10 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
     try {
       final datasource = AuthRemoteDatasource();
-      final repository = AuthRepositoryImpl(datasource);
+      // PARA EL DATABASE CON SUPABASE
+      //final repository = AuthRepositoryImpl(datasource);
+      //final usecase = LoginUsecase(repository);
+      final repository = AuthRepositoryMock();
       final usecase = LoginUsecase(repository);
 
       final user = await usecase(
@@ -28,10 +32,7 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Bienvenido, ${user.fullName}')),
-      );
-      // Navega a home o dashboard aquí
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),

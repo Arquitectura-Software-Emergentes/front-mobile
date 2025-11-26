@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/config/AppRoutes.dart';
 import '../../data/datasources/auth_remote_datasource.dart';
+import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/usecases/register_usecase.dart';
 
@@ -28,7 +29,12 @@ class _RegisterPageState extends State<RegisterPage> {
     }
     try {
       final datasource = AuthRemoteDatasource();
+
+      /* DATABASE REAL SUPABASE
       final repository = AuthRepositoryImpl(datasource);
+      final usecase = RegisterUsecase(repository);*/
+
+      final repository = AuthRepositoryMock();
       final usecase = RegisterUsecase(repository);
 
       final user = await usecase(
