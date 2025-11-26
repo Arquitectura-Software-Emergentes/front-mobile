@@ -67,188 +67,176 @@ class _HomePageState extends State<HomePage> {
   }
 
   // --------------------------------------------------------
-  // VISTA PRINCIPAL - HOME (FIGMA EXACTO)
+  // VISTA PRINCIPAL - HOME
   // --------------------------------------------------------
   Widget _homeView(HomeData data) {
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: const Color(0xFF00C48E),
-        ),
-
-        Positioned(
-          top: 158,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(37),
-                topRight: Radius.circular(37),
+    final size = MediaQuery.of(context).size;
+    return Container(
+      width: size.width,
+      height: size.height,
+      color: const Color(0xFF00C48E),
+      child: Column(
+        children: [
+          const SizedBox(height: 44),
+          Center(
+            child: SizedBox(
+              width: 40,
+              child: Text(
+                "Hola!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: "Space Grotesk",
+                  fontWeight: FontWeight.w400,
+                  fontSize: 17,
+                  color: Color.fromRGBO(255, 255, 255, 0.8),
+                ),
               ),
             ),
           ),
-        ),
-
-        // SALUDO
-        const Positioned(
-          top: 44,
-          left: 160,
-          child: SizedBox(
-            width: 40,
-            child: Text(
-              "Hola!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: "Space Grotesk",
-                fontWeight: FontWeight.w400,
-                fontSize: 17,
-                color: Color.fromRGBO(255, 255, 255, 0.8),
+          const SizedBox(height: 10),
+          Center(
+            child: SizedBox(
+              width: 190,
+              child: Text(
+                data.userName,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: "Space Grotesk",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 23,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
-        ),
-
-        Positioned(
-          top: 76,
-          left: 85,
-          child: SizedBox(
-            width: 190,
-            child: Text(
-              data.userName,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontFamily: "Space Grotesk",
-                fontWeight: FontWeight.w700,
-                fontSize: 23,
+          const SizedBox(height: 20),
+          Expanded(
+            child: Container(
+              width: size.width,
+              decoration: const BoxDecoration(
                 color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(37),
+                  topRight: Radius.circular(37),
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Resumen Personal',
+                        style: TextStyle(
+                          fontFamily: 'Space Grotesk',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          color: Color(0xFF132D46),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          _summaryBox(
+                            background: const Color(0xFF080808),
+                            value: "${data.totalReports}",
+                            title: "Total de Reportes",
+                            valueColor: Colors.white,
+                            titleColor: Colors.white,
+                          ),
+                          const SizedBox(width: 16),
+                          _summaryBox(
+                            background: Colors.white,
+                            value: "${data.pendingReports}",
+                            title: "Pendientes",
+                            valueColor: Colors.black,
+                            titleColor: Colors.black,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          _summaryBox(
+                            background: const Color(0xFF00C48E),
+                            value: "${data.resolvedReports}",
+                            title: "Resueltos",
+                            valueColor: Colors.black,
+                            titleColor: Colors.black,
+                            height: 46,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      const Text(
+                        "Actividad Reciente",
+                        style: TextStyle(
+                          fontFamily: 'Space Grotesk',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          color: Color(0xFF132D46),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      ...List.generate(
+                        data.activities.length,
+                        (i) => Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: _activityCard(data.activities[i]),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Container(
+                        width: double.infinity,
+                        height: 58,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFBDFFED),
+                          borderRadius: BorderRadius.circular(7),
+                          border: Border.all(color: Colors.black, width: 0.5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Impacto Comunitario",
+                                style: TextStyle(
+                                    fontSize: 8, fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                data.impact.message,
+                                style: const TextStyle(fontSize: 6),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedIndex = 3;
+                                  });
+                                },
+                                child: const Text(
+                                  "Ver en mapa",
+                                  style: TextStyle(
+                                    fontSize: 6,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-
-        // RESUMEN PERSONAL
-        const Positioned(
-          top: 198,
-          left: 28,
-          child: Text(
-            'Resumen Personal',
-            style: TextStyle(
-              fontFamily: 'Space Grotesk',
-              fontWeight: FontWeight.w700,
-              fontSize: 13,
-              color: Color(0xFF132D46),
-            ),
-          ),
-        ),
-
-        // CARDS DEL RESUMEN
-        Positioned(
-          top: 229,
-          left: 28,
-          child: _summaryBox(
-            background: const Color(0xFF080808),
-            value: "${data.totalReports}",
-            title: "Total de Reportes",
-            valueColor: Colors.white,
-            titleColor: Colors.white,
-          ),
-        ),
-
-        Positioned(
-          top: 229,
-          left: 186,
-          child: _summaryBox(
-            background: Colors.white,
-            value: "${data.pendingReports}",
-            title: "Pendientes",
-            valueColor: Colors.black,
-            titleColor: Colors.black,
-          ),
-        ),
-
-        Positioned(
-          top: 287,
-          left: 28,
-          child: _summaryBox(
-            background: const Color(0xFF00C48E),
-            value: "${data.resolvedReports}",
-            title: "Resueltos",
-            valueColor: Colors.black,
-            titleColor: Colors.black,
-            height: 46,
-          ),
-        ),
-
-        // ACTIVIDAD RECIENTE
-        const Positioned(
-          top: 338,
-          left: 26,
-          child: Text(
-            "Actividad Reciente",
-            style: TextStyle(
-              fontFamily: 'Space Grotesk',
-              fontWeight: FontWeight.w700,
-              fontSize: 13,
-              color: Color(0xFF132D46),
-            ),
-          ),
-        ),
-
-        // LISTA DE ACTIVIDADES
-        ...List.generate(
-          data.activities.length,
-              (i) => Positioned(
-            top: 370 + (i * 90),
-            left: 26,
-            child: _activityCard(data.activities[i]),
-          ),
-        ),
-
-        // IMPACTO COMUNITARIO
-        Positioned(
-          top: 551,
-          left: 25,
-          child: Container(
-            width: 308,
-            height: 58,
-            decoration: BoxDecoration(
-              color: const Color(0xFFBDFFED),
-              borderRadius: BorderRadius.circular(7),
-              border: Border.all(color: Colors.black, width: 0.5),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Impacto Comunitario",
-                    style: TextStyle(
-                        fontSize: 8, fontWeight: FontWeight.w500),
-                  ),
-                  Text(
-                    data.impact.message,
-                    style: const TextStyle(fontSize: 6),
-                  ),
-                  const Text(
-                    "Ver en mapa",
-                    style: TextStyle(
-                      fontSize: 6,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
