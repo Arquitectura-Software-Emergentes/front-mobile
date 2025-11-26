@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 44),
                 Center(
                   child: SizedBox(
-                    width: 40,
+                    width: 100,
                     child: Text(
                       "Hola!",
                       textAlign: TextAlign.center,
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 10),
                 Center(
                   child: SizedBox(
-                    width: 190,
+                    width: 300,
                     child: Text(
                       data.userName,
                       textAlign: TextAlign.center,
@@ -153,6 +153,7 @@ class _HomePageState extends State<HomePage> {
                           background: const Color(0xFF080808),
                           value: "${data.totalReports}",
                           title: "Total de Reportes",
+                          height: 70,
                           valueColor: Colors.white,
                           titleColor: Colors.white,
                           iconPath: summaryIcons[0],
@@ -164,6 +165,7 @@ class _HomePageState extends State<HomePage> {
                           background: Colors.white,
                           value: "${data.pendingReports}",
                           title: "Pendientes",
+                          height: 70,
                           valueColor: Colors.black,
                           titleColor: Colors.black,
                           iconPath: summaryIcons[1],
@@ -182,7 +184,8 @@ class _HomePageState extends State<HomePage> {
                           title: "Resueltos",
                           valueColor: Colors.black,
                           titleColor: Colors.black,
-                          height: 46,
+                          height: 70,
+                          width: 50,
                           iconPath: summaryIcons[2],
                         ),
                       ),
@@ -289,7 +292,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       width: width,
       height: height,
-      constraints: BoxConstraints(minHeight: height),
+      constraints: BoxConstraints(minHeight: height + 2),
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(7),
@@ -297,46 +300,49 @@ class _HomePageState extends State<HomePage> {
           bottom: BorderSide(color: Colors.black, width: 1),
         ),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (iconPath != null)
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              child: Image.asset(
-                iconPath,
-                width: 30,
-                height: 30,
-                errorBuilder: (context, error, stackTrace) => Icon(Icons.insert_chart, size: 30),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (iconPath != null)
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                child: Image.asset(
+                  iconPath,
+                  width: 30,
+                  height: 30,
+                  errorBuilder: (context, error, stackTrace) => Icon(Icons.insert_chart, size: 30),
+                ),
+              ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontFamily: "Space Grotesk",
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                      color: valueColor,
+                    ),
+                  ),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontFamily: "Space Grotesk",
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
+                      color: titleColor,
+                    ),
+                  ),
+                ],
               ),
             ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontFamily: "Space Grotesk",
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
-                    color: valueColor,
-                  ),
-                ),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontFamily: "Space Grotesk",
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: titleColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
