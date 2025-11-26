@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../domain/usecases/get_home_data_usecase.dart';
 import '../data/repositories/home_repository_impl.dart';
 import '../domain/entities/home_data.dart';
+import '../../../shared/navbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -380,11 +381,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _getSectionWidget(_selectedIndex),
-      // ⬇️ YA TIENES NAVBAR, SOLO AGREGA TU IMPORT Y VARIABLE
-      // bottomNavigationBar: Navbar(
-      //   selectedIndex: _selectedIndex,
-      //   onTap: _onNavbarTap,
-      // ),
+      bottomNavigationBar: Navbar(
+        selectedIndex: _selectedIndex,
+        onTap: _onNavbarTap,
+      ),
     );
   }
 }
