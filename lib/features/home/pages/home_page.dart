@@ -71,167 +71,200 @@ class _HomePageState extends State<HomePage> {
   // --------------------------------------------------------
   Widget _homeView(HomeData data) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      height: size.height,
-      color: const Color(0xFF00C48E),
+    final summaryIcons = [
+      'lib/assets/icons/total_report.png', // icono para total de reportes
+      'lib/assets/icons/pending_report.png', // icono para pendientes
+      'lib/assets/icons/resolved_report.png', // icono para resueltos
+    ];
+    final impactIcon = 'lib/assets/icons/map_impact.png';
+    return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 44),
-          Center(
-            child: SizedBox(
-              width: 40,
-              child: Text(
-                "Hola!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: "Space Grotesk",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                  color: Color.fromRGBO(255, 255, 255, 0.8),
+          Container(
+            color: const Color(0xFF00C48E),
+            child: Column(
+              children: [
+                const SizedBox(height: 44),
+                Center(
+                  child: SizedBox(
+                    width: 40,
+                    child: Text(
+                      "Hola!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: "Space Grotesk",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                        color: Color.fromRGBO(255, 255, 255, 0.8),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(height: 10),
+                Center(
+                  child: SizedBox(
+                    width: 190,
+                    child: Text(
+                      data.userName,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: "Space Grotesk",
+                        fontWeight: FontWeight.w700,
+                        fontSize: 28,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
           ),
-          const SizedBox(height: 10),
-          Center(
-            child: SizedBox(
-              width: 190,
-              child: Text(
-                data.userName,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: "Space Grotesk",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 23,
-                  color: Colors.white,
-                ),
+          Container(
+            width: size.width,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(37),
+                topRight: Radius.circular(37),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              width: size.width,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(37),
-                  topRight: Radius.circular(37),
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  child: Column(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Resumen Personal',
+                    style: TextStyle(
+                      fontFamily: 'Space Grotesk',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      color: Color(0xFF132D46),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Resumen Personal',
-                        style: TextStyle(
-                          fontFamily: 'Space Grotesk',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                          color: Color(0xFF132D46),
+                      Expanded(
+                        child: _summaryBox(
+                          background: const Color(0xFF080808),
+                          value: "${data.totalReports}",
+                          title: "Total de Reportes",
+                          valueColor: Colors.white,
+                          titleColor: Colors.white,
+                          iconPath: summaryIcons[0],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          _summaryBox(
-                            background: const Color(0xFF080808),
-                            value: "${data.totalReports}",
-                            title: "Total de Reportes",
-                            valueColor: Colors.white,
-                            titleColor: Colors.white,
-                          ),
-                          const SizedBox(width: 16),
-                          _summaryBox(
-                            background: Colors.white,
-                            value: "${data.pendingReports}",
-                            title: "Pendientes",
-                            valueColor: Colors.black,
-                            titleColor: Colors.black,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          _summaryBox(
-                            background: const Color(0xFF00C48E),
-                            value: "${data.resolvedReports}",
-                            title: "Resueltos",
-                            valueColor: Colors.black,
-                            titleColor: Colors.black,
-                            height: 46,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      const Text(
-                        "Actividad Reciente",
-                        style: TextStyle(
-                          fontFamily: 'Space Grotesk',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                          color: Color(0xFF132D46),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      ...List.generate(
-                        data.activities.length,
-                        (i) => Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: _activityCard(data.activities[i]),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      Container(
-                        width: double.infinity,
-                        height: 58,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFBDFFED),
-                          borderRadius: BorderRadius.circular(7),
-                          border: Border.all(color: Colors.black, width: 0.5),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Impacto Comunitario",
-                                style: TextStyle(
-                                    fontSize: 8, fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                data.impact.message,
-                                style: const TextStyle(fontSize: 6),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _selectedIndex = 3;
-                                  });
-                                },
-                                child: const Text(
-                                  "Ver en mapa",
-                                  style: TextStyle(
-                                    fontSize: 6,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _summaryBox(
+                          background: Colors.white,
+                          value: "${data.pendingReports}",
+                          title: "Pendientes",
+                          valueColor: Colors.black,
+                          titleColor: Colors.black,
+                          iconPath: summaryIcons[1],
                         ),
                       ),
                     ],
                   ),
-                ),
+                  const SizedBox(height: 12),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: _summaryBox(
+                          background: const Color(0xFF00C48E),
+                          value: "${data.resolvedReports}",
+                          title: "Resueltos",
+                          valueColor: Colors.black,
+                          titleColor: Colors.black,
+                          height: 46,
+                          iconPath: summaryIcons[2],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    "Actividad Reciente",
+                    style: TextStyle(
+                      fontFamily: 'Space Grotesk',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      color: Color(0xFF132D46),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ...List.generate(
+                    data.activities.length,
+                    (i) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: _activityCard(data.activities[i]),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Container(
+                    width: double.infinity,
+                    constraints: BoxConstraints(minHeight: 58),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFBDFFED),
+                      borderRadius: BorderRadius.circular(7),
+                      border: Border.all(color: Colors.black, width: 0.5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            impactIcon,
+                            width: 29,
+                            height: 29,
+                            errorBuilder: (context, error, stackTrace) => Icon(Icons.star, size: 29),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Impacto Comunitario",
+                                  style: TextStyle(
+                                      fontSize: 12, fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  data.impact.message,
+                                  style: const TextStyle(fontSize: 10),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedIndex = 3;
+                                    });
+                                  },
+                                  child: const Text(
+                                    "Ver en mapa",
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -249,12 +282,14 @@ class _HomePageState extends State<HomePage> {
     required Color background,
     required Color valueColor,
     required Color titleColor,
+    String? iconPath,
     double width = 148,
     double height = 50,
   }) {
     return Container(
       width: width,
       height: height,
+      constraints: BoxConstraints(minHeight: height),
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(7),
@@ -262,25 +297,43 @@ class _HomePageState extends State<HomePage> {
           bottom: BorderSide(color: Colors.black, width: 1),
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            value,
-            style: TextStyle(
-              fontFamily: "Space Grotesk",
-              fontWeight: FontWeight.w500,
-              fontSize: 15,
-              color: valueColor,
+          if (iconPath != null)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              child: Image.asset(
+                iconPath,
+                width: 30,
+                height: 30,
+                errorBuilder: (context, error, stackTrace) => Icon(Icons.insert_chart, size: 30),
+              ),
             ),
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              fontFamily: "Space Grotesk",
-              fontWeight: FontWeight.w400,
-              fontSize: 5,
-              color: titleColor,
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontFamily: "Space Grotesk",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    color: valueColor,
+                  ),
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: "Space Grotesk",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    color: titleColor,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -293,46 +346,55 @@ class _HomePageState extends State<HomePage> {
   // --------------------------------------------------------
   Widget _activityCard(activity) {
     return Container(
-      width: 308,
-      height: 80,
+      width: double.infinity,
+      constraints: BoxConstraints(minHeight: 80),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(7),
         border: Border.all(color: Colors.black, width: 0.2),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 118,
-            height: 79,
-            margin: const EdgeInsets.all(4),
+            width: 90,
+            height: 70,
+            margin: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
                 image: AssetImage(activity.imageUrl),
                 fit: BoxFit.cover,
+                onError: (error, stackTrace) {},
               ),
             ),
+            child: Image.asset(
+              activity.imageUrl,
+              width: 90,
+              height: 70,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Icon(Icons.image, size: 40),
+            ),
           ),
-
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(activity.title,
                       style: const TextStyle(
-                          fontSize: 10, fontWeight: FontWeight.w500)),
+                          fontSize: 16, fontWeight: FontWeight.w600)),
                   Text(activity.location,
                       style: const TextStyle(
-                          fontSize: 6, color: Color(0xFF9F9F9F))),
+                          fontSize: 12, color: Color(0xFF9F9F9F))),
                   Text(activity.timeAgo,
                       style: const TextStyle(
-                          fontSize: 6, color: Color(0xFF9F9F9F))),
+                          fontSize: 12, color: Color(0xFF9F9F9F))),
                   Text(activity.description,
                       style: const TextStyle(
-                          fontSize: 6, color: Color(0xFF9F9F9F))),
+                          fontSize: 12, color: Color(0xFF9F9F9F))),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
@@ -347,7 +409,7 @@ class _HomePageState extends State<HomePage> {
                       child: Text(
                         activity.status,
                         style: const TextStyle(
-                            fontSize: 6,
+                            fontSize: 12,
                             color: Colors.white,
                             fontWeight: FontWeight.w500),
                       ),
