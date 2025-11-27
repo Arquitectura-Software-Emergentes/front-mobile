@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../reports/presentation/pages/report_page.dart';
 import '../domain/usecases/get_home_data_usecase.dart';
 import '../data/repositories/home_repository_impl.dart';
 import '../domain/entities/home_data.dart';
@@ -54,7 +55,7 @@ class _HomePageState extends State<HomePage> {
 
     switch (index) {
       case 1:
-        return const Center(child: Text('Reportes'));
+        return const ReportPage();        
       case 2:
         return const Center(child: Text('Reportar'));
       case 3:
