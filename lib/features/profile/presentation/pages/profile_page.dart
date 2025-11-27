@@ -46,124 +46,104 @@ class _ProfilePageState extends State<ProfilePage> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: _loading || _profile == null
-          ? const Center(child: CircularProgressIndicator())
-          : Stack(
+  body: Container(
+    width: double.infinity,
+    height: double.infinity,
+    decoration: const BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage("lib/assets/images/Cuenta.png"),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: _loading || _profile == null
+        ? const Center(child: CircularProgressIndicator())
+        : SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
               children: [
-                // ---------------------------------
-                //        FONDO (IMAGEN SUPERIOR)
-                // ---------------------------------
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Image.asset(
-                    "lib/assets/images/Cuenta.png",
-                    width: size.width,
-                    height: size.height * 0.22,
-                    fit: BoxFit.cover,
+                const SizedBox(height: 120),
+
+                // FOTO DE PERFIL
+                CircleAvatar(
+                  radius: 42,
+                  backgroundImage: AssetImage(_profile!.avatarUrl),
+                ),
+
+                const SizedBox(height: 12),
+
+                Text(
+                  _profile!.name,
+                  style: const TextStyle(
+                    fontFamily: "Space Grotesk",
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF132D46),
                   ),
                 ),
 
-                // ---------------------------------
-                //         CONTENIDO SCROLLABLE
-                // ---------------------------------
-                Positioned.fill(
-                  top: size.height * 0.12,
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 40),
+                Text(
+                  _profile!.email,
+                  style: const TextStyle(
+                    fontFamily: "Space Grotesk",
+                    fontSize: 12,
+                    color: Color(0xFF00C48E),
+                  ),
+                ),
 
-                        // FOTO DE PERFIL
-                        CircleAvatar(
-                          radius: 42,
-                          backgroundImage: AssetImage(_profile!.avatarUrl),
-                        ),
+                const SizedBox(height: 28),
 
-                        const SizedBox(height: 12),
+                _buildLabel("Teléfono"),
+                _buildBox(_profile!.phone),
 
-                        // NOMBRE
-                        Text(
-                          _profile!.name,
-                          style: const TextStyle(
-                            fontFamily: "Space Grotesk",
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF132D46),
-                          ),
-                        ),
+                _buildLabel("Dirección"),
+                _buildBox(_profile!.address),
 
-                        // EMAIL
-                        Text(
-                          _profile!.email,
-                          style: const TextStyle(
-                            fontFamily: "Space Grotesk",
-                            fontSize: 12,
-                            color: Color(0xFF00C48E),
-                          ),
-                        ),
+                _buildLabel("Fecha de nacimiento"),
+                _buildBox(
+                  "${_profile!.birthDate.day.toString().padLeft(2, '0')}/"
+                  "${_profile!.birthDate.month.toString().padLeft(2, '0')}/"
+                  "${_profile!.birthDate.year}",
+                ),
 
-                        const SizedBox(height: 28),
+                _buildLabel("DNI"),
+                _buildBox(_profile!.dni),
 
-                        // CAMPOS
-                        _buildLabel("Teléfono"),
-                        _buildBox(_profile!.phone),
+                _buildLabel("Ocupación"),
+                _buildBox(_profile!.occupation),
 
-                        _buildLabel("Dirección"),
-                        _buildBox(_profile!.address),
+                const SizedBox(height: 20),
 
-                        _buildLabel("Fecha de nacimiento"),
-                        _buildBox(
-                          "${_profile!.birthDate.day.toString().padLeft(2, '0')}/"
-                          "${_profile!.birthDate.month.toString().padLeft(2, '0')}/"
-                          "${_profile!.birthDate.year}",
-                        ),
-
-                        _buildLabel("DNI"),
-                        _buildBox(_profile!.dni),
-
-                        _buildLabel("Ocupación"),
-                        _buildBox(_profile!.occupation),
-
-                        const SizedBox(height: 20),
-
-                        // BOTÓN ACTUALIZAR
-                        SizedBox(
-                          width: double.infinity,
-                          height: 42,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF00C48E),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              elevation: 0,
-                              shadowColor: Colors.transparent,
-                            ),
-                            onPressed: () {},
-                            child: const Text(
-                              "Actualizar",
-                              style: TextStyle(
-                                fontFamily: "Space Grotesk",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 60),
-                      ],
+                SizedBox(
+                  width: double.infinity,
+                  height: 42,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF00C48E),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      elevation: 0,
+                    ),
+                    onPressed: () {},
+                    child: const Text(
+                      "Actualizar",
+                      style: TextStyle(
+                        fontFamily: "Space Grotesk",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
+
+                const SizedBox(height: 60),
               ],
             ),
-    );
+          ),
+  ),
+);
+
   }
 
   // ---------------------------------
