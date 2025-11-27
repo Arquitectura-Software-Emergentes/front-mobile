@@ -11,7 +11,26 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
+    // Helper to filter reports by search and filter
+    List<Report> _filterReports(List<Report> reports) {
+      List<Report> filtered = reports;
+      if (selectedFilter != 0) {
+        final filter = filters[selectedFilter].toLowerCase();
+        filtered = filtered.where((r) => r.status.toLowerCase().contains(filter)).toList();
+      }
+      if (searchQuery.trim().isNotEmpty) {
+        final query = searchQuery.trim().toLowerCase();
+        filtered = filtered.where((r) =>
+          r.title.toLowerCase().contains(query) ||
+          r.description.toLowerCase().contains(query)
+        ).toList();
+      }
+      return filtered;
+    }
   late Future<List<Report>> _reportsFuture;
+
+  final TextEditingController _searchController = TextEditingController();
+  String searchQuery = "";
 
   int selectedFilter = 0;
   final filters = [
@@ -99,19 +118,31 @@ class _ReportPageState extends State<ReportPage> {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: const Color(0xFFE4E4E4)),
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.search, color: Color(0xFF9F9F9F)),
-                        SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            "Buscar por ubicación o descripción...",
-                            style: TextStyle(
-                              fontFamily: "Space Grotesk",
-                              color: Color(0xFF9F9F9F),
-                              fontSize: 13,
+                        const Icon(Icons.search, color: Color(0xFF9F9F9F)),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: TextField(
+                            controller: _searchController,
+                            onChanged: (value) {
+                              setState(() => searchQuery = value);
+                            },
+                            decoration: const InputDecoration(
+                              hintText: "Buscar por ubicación o descripción...",
+                              hintStyle: TextStyle(
+                                fontFamily: "Space Grotesk",
+                                color: Color(0xFF9F9F9F),
+                                fontSize: 13,
+                              ),
+                              border: InputBorder.none,
+                              isDense: true,
                             ),
-                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: "Space Grotesk",
+                              fontSize: 13,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ],
@@ -177,7 +208,9 @@ class _ReportPageState extends State<ReportPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
-                    children: reports.map((r) => _ReportCard(report: r, maxWidth: width)).toList(),
+                    children: _filterReports(reports)
+                        .map((r) => _ReportCard(report: r, maxWidth: width))
+                        .toList(),
                   ),
                 ),
               ],
