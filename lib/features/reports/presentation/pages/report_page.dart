@@ -33,8 +33,6 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final maxContentWidth = width < 400 ? width : 400.0;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: FutureBuilder<List<Report>>(
@@ -52,125 +50,137 @@ class _ReportPageState extends State<ReportPage> {
 
           final reports = snapshot.data!;
 
-          return Center(
-            child: Container(
-              width: maxContentWidth,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // -----------------------------
-                    //         TÍTULO PRINCIPAL
-                    // -----------------------------
-                    const Text(
-                      "Mis reportes",
-                      style: TextStyle(
-                        fontFamily: "Space Grotesk",
-                        fontSize: 28,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF132D46),
-                      ),
+          return SingleChildScrollView(
+            padding: EdgeInsets.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // -----------------------------
+                //         TÍTULO PRINCIPAL
+                // -----------------------------
+                const Padding(
+                  padding: EdgeInsets.only(left: 24, top: 24),
+                  child: Text(
+                    "Mis reportes",
+                    style: TextStyle(
+                      fontFamily: "Space Grotesk",
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF132D46),
                     ),
-                    const SizedBox(height: 5),
+                  ),
+                ),
+                const SizedBox(height: 5),
 
-                    Text(
-                      "${reports.length} de ${reports.length} reportes",
-                      style: const TextStyle(
-                        fontFamily: "Space Grotesk",
-                        fontSize: 13,
-                        fontWeight: FontWeight.w300,
-                        color: Color(0xFF65727A),
-                      ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 24),
+                  child: Text(
+                    "${reports.length} de ${reports.length} reportes",
+                    style: const TextStyle(
+                      fontFamily: "Space Grotesk",
+                      fontSize: 13,
+                      fontWeight: FontWeight.w300,
+                      color: Color(0xFF65727A),
                     ),
-                    const SizedBox(height: 16),
+                  ),
+                ),
+                const SizedBox(height: 16),
 
-                    // -----------------------------
-                    //               BUSCADOR
-                    // -----------------------------
-                    Container(
-                      height: 44,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFE4E4E4)),
-                      ),
-                      child: const Row(
-                        children: [
-                          Icon(Icons.search, color: Color(0xFF9F9F9F)),
-                          SizedBox(width: 8),
-                          Flexible(
-                            child: Text(
-                              "Buscar por ubicación o descripción...",
-                              style: TextStyle(
-                                fontFamily: "Space Grotesk",
-                                color: Color(0xFF9F9F9F),
-                                fontSize: 13,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                // -----------------------------
+                //               BUSCADOR
+                // -----------------------------
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Container(
+                    height: 44,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: const Color(0xFFE4E4E4)),
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.search, color: Color(0xFF9F9F9F)),
+                        SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            "Buscar por ubicación o descripción...",
+                            style: TextStyle(
+                              fontFamily: "Space Grotesk",
+                              color: Color(0xFF9F9F9F),
+                              fontSize: 13,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                // -----------------------------
+                //              FILTROS
+                // -----------------------------
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: SizedBox(
+                    height: 36,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (_, i) => GestureDetector(
+                        onTap: () => setState(() => selectedFilter = i),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: selectedFilter == i
+                                ? const Color(0xFF00C48E)
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: selectedFilter == i
+                                  ? Colors.transparent
+                                  : const Color(0xFF132D46),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // -----------------------------
-                    //              FILTROS
-                    // -----------------------------
-                    SizedBox(
-                      height: 36,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (_, i) => GestureDetector(
-                          onTap: () => setState(() => selectedFilter = i),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
+                          child: Text(
+                            filters[i],
+                            style: TextStyle(
+                              fontFamily: "Space Grotesk",
+                              fontSize: 13,
+                              fontWeight: selectedFilter == i
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
                               color: selectedFilter == i
-                                  ? const Color(0xFF00C48E)
-                                  : Colors.white,
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(
-                                color: selectedFilter == i
-                                    ? Colors.transparent
-                                    : const Color(0xFF132D46),
-                              ),
-                            ),
-                            child: Text(
-                              filters[i],
-                              style: TextStyle(
-                                fontFamily: "Space Grotesk",
-                                fontSize: 13,
-                                fontWeight: selectedFilter == i
-                                    ? FontWeight.w600
-                                    : FontWeight.w400,
-                                color: selectedFilter == i
-                                    ? Colors.white
-                                    : const Color(0xFF132D46),
-                              ),
+                                  ? Colors.white
+                                  : const Color(0xFF132D46),
                             ),
                           ),
                         ),
-                        separatorBuilder: (_, __) => const SizedBox(width: 8),
-                        itemCount: filters.length,
                       ),
+                      separatorBuilder: (_, __) => const SizedBox(width: 8),
+                      itemCount: filters.length,
                     ),
-
-                    const SizedBox(height: 16),
-
-                    // -----------------------------
-                    //         LISTA DE REPORTES
-                    // -----------------------------
-                    ...reports.map((r) => _ReportCard(report: r, maxWidth: maxContentWidth)).toList(),
-                  ],
+                  ),
                 ),
-              ),
+
+                const SizedBox(height: 16),
+
+                // -----------------------------
+                //         LISTA DE REPORTES
+                // -----------------------------
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    children: reports.map((r) => _ReportCard(report: r, maxWidth: width)).toList(),
+                  ),
+                ),
+              ],
             ),
           );
         },
@@ -202,11 +212,9 @@ class _ReportCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardWidth = maxWidth;
     final imageWidth = 90.0;
     final imageHeight = 70.0;
     return Container(
-      width: cardWidth,
       margin: const EdgeInsets.only(bottom: 8),
       constraints: const BoxConstraints(minHeight: 80),
       decoration: BoxDecoration(
