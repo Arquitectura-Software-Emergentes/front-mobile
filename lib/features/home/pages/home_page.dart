@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lima_urban_mobile/features/profile/presentation/pages/profile_page.dart';
 
+import '../../reports/presentation/pages/report_camera_flow.dart';
 import '../../reports/presentation/pages/report_page.dart';
 import '../domain/usecases/get_home_data_usecase.dart';
 import '../data/repositories/home_repository_impl.dart';
@@ -58,7 +59,7 @@ class _HomePageState extends State<HomePage> {
       case 1:
         return const ReportPage();        
       case 2:
-        return const Center(child: Text('Reportar'));
+            return const ReportCameraFlow();
       case 3:
         return const Center(child: Text('Mapa'));
       case 4:
