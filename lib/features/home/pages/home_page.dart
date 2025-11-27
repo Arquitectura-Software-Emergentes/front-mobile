@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lima_urban_mobile/features/profile/presentation/pages/profile_page.dart';
 
 import '../../reports/presentation/pages/report_page.dart';
 import '../domain/usecases/get_home_data_usecase.dart';
@@ -61,7 +62,7 @@ class _HomePageState extends State<HomePage> {
       case 3:
         return const Center(child: Text('Mapa'));
       case 4:
-        return const Center(child: Text('Perfil'));
+      return const ProfilePage();
       default:
         return _homeView(_homeData!);
     }
